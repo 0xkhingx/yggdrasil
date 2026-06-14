@@ -80,12 +80,35 @@ export default function Onboarding() {
     .crack-line { animation: crackLine 300ms ease-out forwards; }
     .stem-grow { animation: stemGrow 700ms ease-out forwards; }
     .leaf-pop { animation: leafPop 300ms ease-out forwards; transform-box: fill-box; transform-origin: center; }
+    @media (max-width: 640px) {
+      .onboarding-shell {
+        padding: 96px 16px 32px !important;
+      }
+      .onboarding-title {
+        font-size: clamp(30px, 9vw, 40px) !important;
+        margin-bottom: 28px !important;
+      }
+      .onboarding-card {
+        padding: 18px !important;
+      }
+      .onboarding-row {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+      .onboarding-pill-row {
+        justify-content: center;
+      }
+      .onboarding-submit {
+        align-self: flex-end;
+      }
+    }
   `;
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden bg-[#f0f4f1] animate-fadeIn">
       <style>{style}</style>
       <div
+        className="onboarding-shell"
         style={{
           minHeight: "100vh",
           width: "100%",
@@ -97,6 +120,7 @@ export default function Onboarding() {
         }}
       >
         <div
+          className="onboarding-title"
           style={{
             width: "100%",
             maxWidth: 680,
@@ -135,7 +159,7 @@ export default function Onboarding() {
           {phase === "input" && (
             <>
               <div
-                className="premium-panel"
+                className="onboarding-card premium-panel"
                 style={{
                   width: "100%",
                   maxWidth: 640,
@@ -170,8 +194,8 @@ export default function Onboarding() {
                 }}
                 className="onboarding-input"
               />
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <div className="onboarding-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+                <div className="onboarding-pill-row" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                 {["Beginner", "Intermediate", "Advanced"].map((level) => {
                   const selected = difficulty === level;
                   return (
@@ -200,7 +224,7 @@ export default function Onboarding() {
                 </div>
 
                 <button
-                  className="premium-button"
+                  className="premium-button onboarding-submit"
                   onClick={handleConfirm}
                   disabled={!topic.trim() || loading}
                   type="button"

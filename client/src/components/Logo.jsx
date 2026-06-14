@@ -1,21 +1,12 @@
-export default function Logo({ onClick, className = "" }) {
-  const clickable = typeof onClick === "function";
-
+export default function Logo({ className = "" }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <span
       className={`${className} animate-fadeIn`}
       style={{
         display: "inline-flex",
         alignItems: "center",
         gap: 6,
-        background: "transparent",
-        border: "none",
-        padding: 0,
-        cursor: clickable ? "pointer" : "default",
       }}
-      aria-label="Yggdrasil home"
     >
       <img
         src="/logo.svg"
@@ -42,6 +33,6 @@ export default function Logo({ onClick, className = "" }) {
       >
         ggdrasil
       </span>
-    </button>
+    </span>
   );
 }

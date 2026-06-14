@@ -45,6 +45,7 @@ function TreeRow({ item, onView }) {
 
   return (
     <div
+      className="profile-history-row"
       style={{
         display: "flex",
         alignItems: "center",
@@ -64,7 +65,7 @@ function TreeRow({ item, onView }) {
       <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
         <span style={{ width: 8, height: 8, borderRadius: "50%", background: dotColor, flexShrink: 0 }} />
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 18, fontWeight: 600, color: "#1a1a1a", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <div className="profile-history-topic" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 18, fontWeight: 600, color: "#1a1a1a", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {item.topic || "Untitled tree"}
           </div>
         </div>
@@ -74,7 +75,7 @@ function TreeRow({ item, onView }) {
         {item.detail || "Recent activity"}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+      <div className="profile-history-meta" style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
         <div style={{ fontFamily: "Raleway, sans-serif", fontSize: 12, color: "#aaa", whiteSpace: "nowrap" }}>
           {formatDate(item.lastActive || item.completedAt)}
         </div>
@@ -158,7 +159,7 @@ export default function Profile() {
         boxSizing: "border-box",
       }}
     >
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 60px" }}>
+      <div className="profile-container" style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 60px" }}>
         {loading ? (
           <div style={{ minHeight: "50vh", display: "grid", placeItems: "center" }}>
             <div style={{ width: 28, height: 28, borderRadius: "50%", border: "2px solid rgba(0,0,0,0.12)", borderTopColor: "#52B788", animation: "spin 1s linear infinite" }} />
@@ -169,13 +170,16 @@ export default function Profile() {
               @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
               @media (max-width: 720px) {
                 .profile-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+                .profile-header { flex-direction: column !important; align-items: flex-start !important; padding: 24px !important; }
+                .profile-header-name { font-size: 22px !important; white-space: normal !important; }
                 .profile-history-row { align-items: flex-start !important; flex-direction: column !important; }
-                .profile-history-left { width: 100% !important; }
+                .profile-history-topic { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
                 .profile-history-meta { width: 100% !important; justify-content: space-between !important; }
               }
             `}</style>
 
             <div
+              className="profile-header"
               style={{
                 background: "#fff",
                 borderRadius: 24,
@@ -207,7 +211,7 @@ export default function Profile() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
-                <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 28, fontWeight: 600, color: "#1a1a1a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div className="profile-header-name" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 28, fontWeight: 600, color: "#1a1a1a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {email || "your profile"}
                 </div>
                 <div style={{ fontFamily: "Raleway, sans-serif", fontSize: 13, color: "#888" }}>

@@ -52,7 +52,7 @@ export default function Landing() {
 
   return (
     <div
-      className="animate-fadeIn"
+      className="animate-fadeIn landing-shell"
       style={{
         width: "100vw",
         height: "100vh",
@@ -95,6 +95,50 @@ export default function Landing() {
         }
         .landing-cta:hover .landing-cta-label {
           letter-spacing: 0.04em;
+        }
+        @media (max-width: 900px) {
+          .landing-shell {
+            width: 100vw;
+            min-height: 100dvh;
+            height: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+          }
+          .landing-main {
+            flex-direction: column;
+            height: auto;
+            min-height: calc(100dvh - 72px);
+            padding-top: 88px;
+          }
+          .landing-hero,
+          .landing-aside {
+            width: 100% !important;
+          }
+          .landing-hero {
+            padding: 28px 20px 20px !important;
+          }
+          .landing-hero h1 {
+            font-size: clamp(34px, 10vw, 48px) !important;
+          }
+          .landing-hero p {
+            font-size: 15px !important;
+            max-width: 100% !important;
+          }
+          .landing-aside {
+            min-height: 320px;
+            border-radius: 28px 28px 0 0 !important;
+            margin: 0 !important;
+          }
+          .landing-hero + .landing-aside {
+            margin-top: 20px !important;
+          }
+          .landing-menu-button {
+            height: 44px !important;
+            padding-right: 16px !important;
+          }
+          .landing-menu-button span:last-child {
+            font-size: 14px !important;
+          }
         }
       `}</style>
 
@@ -228,6 +272,7 @@ export default function Landing() {
       </header>
 
       <main
+        className="landing-main"
         style={{
           display: "flex",
           width: "100%",
@@ -237,7 +282,7 @@ export default function Landing() {
         }}
       >
           <section
-            className="animate-riseIn"
+            className="landing-hero animate-riseIn"
             style={{
               width: "55%",
               padding: "74px 40px 60px 60px",
@@ -362,7 +407,7 @@ export default function Landing() {
           </section>
 
           <aside
-            className="animate-riseIn"
+            className="landing-aside animate-riseIn"
             style={{
               width: "45%",
               position: "relative",

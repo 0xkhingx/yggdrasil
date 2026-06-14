@@ -41,10 +41,10 @@ export default function Auth({ onAuth }) {
 
   return (
     <div
-      className="animate-fadeIn"
+      className="animate-fadeIn auth-shell"
       style={{
         width: "100vw",
-        height: "100vh",
+        minHeight: "100dvh",
         overflow: "hidden",
         background: "#f0f4f1",
         display: "flex",
@@ -129,6 +129,27 @@ export default function Auth({ onAuth }) {
         }
         .auth-right .auth-hero-pill {
           animation: authFadeUp 900ms ease both, authSway 7s ease-in-out infinite;
+        }
+        @media (max-width: 768px) {
+          .auth-page {
+            animation: none;
+          }
+          .auth-left {
+            width: 100% !important;
+            padding: 28px 20px 24px !important;
+          }
+          .auth-card {
+            max-width: 100% !important;
+          }
+          .auth-input-wrap {
+            min-height: 48px;
+          }
+          .auth-submit {
+            min-height: 48px;
+          }
+          .auth-footer {
+            max-width: 100% !important;
+          }
         }
       `}</style>
 
@@ -369,6 +390,7 @@ export default function Auth({ onAuth }) {
         </div>
 
         <p
+          className="auth-footer"
           style={{
             margin: "0 auto",
             maxWidth: 360,

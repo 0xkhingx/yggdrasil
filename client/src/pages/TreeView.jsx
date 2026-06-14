@@ -332,6 +332,21 @@ export default function TreeView() {
           .treeview-right {
             padding: 18px;
           }
+          .treeview-shell {
+            padding-top: 88px;
+          }
+          .treeview-right {
+            height: 320px;
+          }
+          .treeview-left .lesson-panel {
+            min-height: 280px;
+          }
+          .treeview-hero-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .treeview-hero-stats {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
 
@@ -401,6 +416,7 @@ export default function TreeView() {
               </div>
 
               <div
+                className="treeview-hero-stats"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
@@ -431,9 +447,10 @@ export default function TreeView() {
           </section>
 
           <section className="treeview-right">
-            <div
-              style={{
-                position: "absolute",
+              <div
+                className="treeview-hero-grid"
+                style={{
+                  position: "absolute",
                 top: 24,
                 right: 24,
                 display: "flex",

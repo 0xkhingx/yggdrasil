@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ArrowSquareOut, Gear, House, Leaf, Lightning, List, MagnifyingGlass, UserCircle } from "@phosphor-icons/react";
+import { ArrowSquareOut, Gear, House, Leaf, Lightning, List, MagnifyingGlass, Plus, UserCircle, X } from "@phosphor-icons/react";
 import Logo from "../components/Logo";
 import { getTrees } from "../lib/api";
 import { supabase } from "../lib/supabase";
@@ -266,10 +266,61 @@ export default function Navbar() {
         .navbar-search-result:hover {
           background: rgba(82,183,136,0.06);
         }
+        @media (max-width: 920px) {
+          .navbar-root {
+            top: 10px !important;
+            left: 10px !important;
+            right: 10px !important;
+          }
+          .navbar-inner {
+            flex-wrap: wrap;
+            gap: 10px;
+          }
+          .navbar-left,
+          .navbar-right {
+            width: 100%;
+            justify-content: space-between;
+          }
+          .navbar-search {
+            position: static !important;
+            transform: none !important;
+            width: 100%;
+            min-width: 0 !important;
+            order: 3;
+          }
+          .navbar-search-results {
+            left: 0;
+            right: 0;
+          }
+          .navbar-item button,
+          .navbar-avatar,
+          .navbar-menu-button {
+            width: 40px !important;
+            height: 40px !important;
+          }
+          .navbar-plant {
+            padding: 8px 14px !important;
+          }
+          .navbar-pill {
+            display: none !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .navbar-search { display: none !important; }
+          .navbar-pill { display: none !important; }
+          .navbar-plant { display: none !important; }
+          .navbar-right > .navbar-action:nth-child(1) { display: none !important; }
+          .navbar-right > .navbar-action:nth-child(3) { display: none !important; }
+          .navbar-mobile-add { display: none !important; }
+          .navbar-avatar { display: none !important; }
+          .navbar-inner { flex-wrap: nowrap !important; }
+          .navbar-left,
+          .navbar-right { width: auto !important; }
+        }
       `}</style>
 
       <div
-        className="premium-panel"
+        className="premium-panel navbar-root"
         style={{
           position: "relative",
           maxWidth: 1200,
@@ -288,8 +339,8 @@ export default function Navbar() {
           pointerEvents: "auto",
         }}
       >
-        <div className="navbar-shell" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div className="navbar-shell navbar-inner" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
+          <div className="navbar-left" style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <button
               className="premium-button navbar-item"
               type="button"
@@ -442,7 +493,7 @@ export default function Navbar() {
             ) : null}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div className="navbar-right" style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <IconAction
               className="navbar-item"
               label="New seed"
@@ -466,7 +517,7 @@ export default function Navbar() {
             </IconAction>
 
             <IconAction
-              className="navbar-item"
+              className="navbar-item navbar-plant"
               label="Plant new seed"
               onClick={() => navigate("/new")}
               style={{
@@ -510,6 +561,26 @@ export default function Navbar() {
               <Gear size={16} color="#888" weight="duotone" />
             </IconAction>
 
+            <button
+              type="button"
+              className="navbar-mobile-add"
+              onClick={() => navigate("/new")}
+              aria-label="Add new"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(0,0,0,0.06)",
+                display: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                border: "none",
+                flexShrink: 0,
+              }}
+            >
+              <Plus size={18} weight="bold" color="#1a1a1a" />
+            </button>
             <button
               className="navbar-avatar"
               type="button"
@@ -557,7 +628,9 @@ export default function Navbar() {
                   transition: "all 0.18s ease",
                 }}
               >
-                <List className="navbar-menu-icon" size={16} color="#888" weight="duotone" style={{ transition: "transform 180ms var(--motion-ease-out)" }} />
+                <span style={{ display: "flex", transition: "transform 0.25s ease", transform: moreOpen ? "rotate(90deg)" : "rotate(0deg)" }}>
+                  {moreOpen ? <X size={16} color="#888" weight="duotone" /> : <List className="navbar-menu-icon" size={16} color="#888" weight="duotone" />}
+                </span>
               </button>
               <HoverTip>More</HoverTip>
 

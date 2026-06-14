@@ -41,6 +41,7 @@ function getDisplayName(email) {
 function StatPill({ icon, text }) {
   return (
     <div
+      className="dashboard-stat-pill"
       style={{
         background: "#fff",
         borderRadius: 999,
@@ -362,8 +363,8 @@ export default function Dashboard() {
   const activeDaySet = new Set(trees.filter((tree) => tree.last_active).map((tree) => new Date(tree.last_active).toDateString()));
 
   return (
-    <div className="animate-fadeIn" style={{ minHeight: "100vh", background: "#f0f4f1", paddingTop: 120, boxSizing: "border-box" }}>
-      <div style={{ display: "flex", gap: 32, maxWidth: 1300, margin: "0 auto", padding: "0 48px 48px", boxSizing: "border-box" }}>
+    <div className="animate-fadeIn dashboard-shell" style={{ minHeight: "100vh", background: "#f0f4f1", paddingTop: 120, boxSizing: "border-box" }}>
+      <div className="dashboard-layout" style={{ display: "flex", gap: 32, maxWidth: 1300, margin: "0 auto", padding: "0 48px 48px", boxSizing: "border-box" }}>
         <main style={{ flex: 1, minWidth: 0 }}>
           <style>{`
             .dashboard-icon-tip { opacity: 0; transform: translateX(-50%) translateY(4px); }
@@ -372,12 +373,66 @@ export default function Dashboard() {
               from { opacity: 0; transform: translateY(12px); }
               to { opacity: 1; transform: translateY(0); }
             }
+            @media (max-width: 1100px) {
+              .dashboard-layout {
+                flex-direction: column;
+                padding: 0 20px 32px !important;
+              }
+              .dashboard-sidebar {
+                width: 100% !important;
+                position: static !important;
+                top: auto !important;
+              }
+            }
+            @media (max-width: 720px) {
+              .dashboard-shell {
+                padding-top: 104px !important;
+              }
+              .dashboard-hero {
+                font-size: clamp(36px, 12vw, 52px) !important;
+              }
+              .dashboard-filter-row {
+                gap: 8px !important;
+              }
+              .dashboard-featured {
+                flex-direction: column !important;
+              }
+              .dashboard-featured-card {
+                padding: 22px 20px !important;
+              }
+              .dashboard-grid {
+                grid-template-columns: 1fr !important;
+              }
+              .dashboard-stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              }
+            }
+            @media (max-width: 640px) {
+              .dashboard-shell {
+                padding-top: 110px !important;
+              }
+              .dashboard-hero {
+                font-size: 36px !important;
+              }
+              .dashboard-stats-row {
+                gap: 8px !important;
+              }
+              .dashboard-stat-pill {
+                font-size: 11px !important;
+                padding: 6px 12px !important;
+              }
+              .dashboard-filter-row {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+              }
+            }
           `}</style>
           <div style={{ marginBottom: 36 }}>
             <div style={{ fontFamily: "Raleway, sans-serif", fontSize: 11, color: "#888", letterSpacing: "2px", textTransform: "uppercase" }}>
               Welcome back
             </div>
-            <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 52, fontWeight: 600, color: "#1a1a1a", lineHeight: 1, marginTop: 4 }}>
+            <div className="dashboard-hero" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 52, fontWeight: 600, color: "#1a1a1a", lineHeight: 1, marginTop: 4 }}>
               {displayName}
             </div>
             {searchQuery ? (
@@ -406,7 +461,7 @@ export default function Dashboard() {
               </div>
             ) : null}
 
-            <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+            <div className="dashboard-stats-row" style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
               <StatPill icon={<Tree size={14} color="#2D6A4F" weight="duotone" />} text={`${totalTreesPlanted} Trees`} />
               <StatPill icon={<Leaf size={14} color="#2D6A4F" weight="duotone" />} text={`${totalNodesMastered} Nodes Mastered`} />
               <StatPill icon={<Fire size={14} color="#2D6A4F" weight="duotone" />} text={`${bestStreak} Day Streak`} />
@@ -415,7 +470,7 @@ export default function Dashboard() {
             <div style={{ marginTop: 24, borderBottom: "1px solid rgba(0,0,0,0.08)" }} />
           </div>
 
-          <div style={{ display: "flex", gap: 10, marginTop: 8, marginBottom: 32, flexWrap: "wrap" }}>
+          <div className="dashboard-filter-row" style={{ display: "flex", gap: 10, marginTop: 8, marginBottom: 32, flexWrap: "wrap" }}>
             {[
               {
                 label: "All",
@@ -491,12 +546,13 @@ export default function Dashboard() {
               </button>
             </div>
 
-              <div style={{ display: "flex", gap: 20 }}>
+              <div className="dashboard-featured" style={{ display: "flex", gap: 20 }}>
                 {featuredTrees.map((tree) => {
                   const status = getStatusMeta(tree.hoursSinceActive ?? 0);
                   const progress = getProgress(tree);
                   return (
                     <div
+                      className="dashboard-featured-card"
                       key={tree.id}
                       style={{
                         flex: 1,
@@ -649,7 +705,7 @@ export default function Dashboard() {
                 </div>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 18 }}>
+              <div className="dashboard-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 18 }}>
                 {filteredTrees.map((tree) => (
                   <TreeCard
                     key={tree.id}
@@ -664,6 +720,7 @@ export default function Dashboard() {
         </main>
 
         <aside
+          className="dashboard-sidebar"
           style={{
             width: 300,
             flexShrink: 0,
@@ -707,7 +764,7 @@ export default function Dashboard() {
             </div>
             <div style={{ fontFamily: "Raleway, sans-serif", fontSize: 12, color: "#888" }}>{email || "Learner"}</div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 16 }}>
+            <div className="dashboard-stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 16 }}>
               <StatCell value={totalTreesPlanted} label="Trees Planted" />
               <StatCell value={totalNodesMastered} label="Nodes Mastered" />
               <StatCell value={bestStreak} label="Best Streak" />

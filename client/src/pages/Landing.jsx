@@ -434,44 +434,6 @@ export default function Landing() {
               }}
             />
 
-            <div
-              className="premium-panel"
-              style={{
-                position: "absolute",
-                bottom: 26,
-                right: 26,
-                background: "#fff",
-                borderRadius: 18,
-                padding: "20px 22px 18px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-                minWidth: 156,
-                zIndex: 2,
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: 12,
-                  right: 12,
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  background: "#e6ebe8",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 12,
-                  color: "#333",
-                }}
-              >
-                ↗
-              </div>
-              <div style={{ fontFamily: "'Raleway', sans-serif", color: "#111", lineHeight: 1 }}>
-                <div style={{ fontSize: 43, fontWeight: 700, letterSpacing: "-0.04em" }}>847</div>
-                <div style={{ marginTop: 6, fontSize: 13, color: "#7b7b7b", fontWeight: 500 }}>Nodes</div>
-                <div style={{ marginTop: 2, fontSize: 13, color: "#7b7b7b", fontWeight: 500 }}>Mastered</div>
-              </div>
-            </div>
           </aside>
         </main>
     </div>

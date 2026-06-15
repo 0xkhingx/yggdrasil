@@ -28,6 +28,11 @@ export default function Onboarding() {
     setLoading(true);
     try {
       const data = await createTree(topic, difficulty);
+      pendo.track("tree_created", {
+        topic: topic,
+        difficulty: difficulty,
+        tree_id: data.treeId
+      });
       setPhase("seed");
       await wait(800);
       setPhase("bounce");

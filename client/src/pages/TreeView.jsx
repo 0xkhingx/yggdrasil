@@ -5,6 +5,8 @@ import { checkDecay, deleteTree, getTree } from "../lib/api";
 import TreeSVG from "../components/TreeSVG";
 import LessonPanel from "../components/LessonPanel";
 
+const _decayTrackedTreeIds = new Set();
+
 function HeroChip({ children }) {
   return (
     <div
@@ -60,6 +62,14 @@ export default function TreeView() {
 
       const decay = await checkDecay(treeId);
       setDecayBanner(decay.decayed);
+      if (decay.decayed && !_decayTrackedTreeIds.has(treeId)) {
+        _decayTrackedTreeIds.add(treeId);
+        pendo.track("knowledge_decay_detected", {
+          tree_id: treeId,
+          affected_node_count: decay.decayedCount || 0,
+          hours_since_active: decay.hoursSinceActive || 0
+        });
+      }
 
       const currentSelectionId = selectedNode?.id;
       const currentSelectionStillExists = currentSelectionId
@@ -107,6 +117,11 @@ export default function TreeView() {
     if (!confirmed) return;
     try {
       await deleteTree(treeId);
+      pendo.track("tree_deleted", {
+        tree_id: treeId,
+        topic: tree.topic,
+        source_page: "tree_view"
+      });
       navigate("/", { replace: true });
     } catch (err) {
       console.error(err);

@@ -66,6 +66,12 @@ export default function LessonPanel({ nodeId, treeId, nodeData, onNodeUpdated })
     try {
       const data = await getQuestion(nodeId);
       setQuestion(data.question);
+      pendo.track("mastery_quiz_started", {
+        node_id: nodeId,
+        tree_id: treeId,
+        node_title: node?.title || "",
+        node_status: node?.status || ""
+      });
     } catch (err) {
       console.error(err);
     }
@@ -79,7 +85,22 @@ export default function LessonPanel({ nodeId, treeId, nodeData, onNodeUpdated })
       setResult(data);
       setPhase("result");
 
+      pendo.track("mastery_quiz_submitted", {
+        node_id: nodeId,
+        tree_id: treeId,
+        score: data.score,
+        passed: data.passed,
+        has_next_node: !!data.nextNodeId
+      });
+
       if (data.passed) {
+        pendo.track("lesson_completed", {
+          node_id: nodeId,
+          tree_id: treeId,
+          score: data.score,
+          next_node_id: data.nextNodeId || "",
+          is_final_node: !data.nextNodeId
+        });
         setTimeout(() => {
           onNodeUpdated?.(data.nextNodeId);
         }, 1500);
@@ -94,6 +115,10 @@ export default function LessonPanel({ nodeId, treeId, nodeData, onNodeUpdated })
     setSubmitting(true);
     try {
       await restoreNode(nodeId);
+      pendo.track("node_restored", {
+        node_id: nodeId,
+        tree_id: treeId
+      });
       setResult({ ...(result || {}), restored: true, feedback: "Knowledge restored" });
       setTimeout(() => {
         onNodeUpdated?.(nodeId);
@@ -112,6 +137,11 @@ export default function LessonPanel({ nodeId, treeId, nodeData, onNodeUpdated })
     notesTimerRef.current = setTimeout(async () => {
       try {
         await saveNotes(nodeId, value);
+        pendo.track("notes_saved", {
+          node_id: nodeId,
+          tree_id: treeId,
+          notes_length: value.length
+        });
         setNotesSaved(true);
         savedTimerRef.current = setTimeout(() => setNotesSaved(false), 2000);
       } catch (err) {

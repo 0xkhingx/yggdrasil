@@ -412,6 +412,15 @@ export default function Navbar() {
               placeholder="Search your forest..."
               aria-label="Search your forest"
               onChange={(e) => updateSearch(e.target.value)}
+              onBlur={(e) => {
+                const q = e.target.value.trim();
+                if (q) {
+                  pendo.track("forest_searched", {
+                    query: q,
+                    results_count: matchCount
+                  });
+                }
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") updateSearch("");
                 if (e.key === "Enter") e.currentTarget.blur();

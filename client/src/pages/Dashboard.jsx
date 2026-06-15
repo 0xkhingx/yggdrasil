@@ -271,6 +271,11 @@ export default function Dashboard() {
     if (!ok) return;
     try {
       await deleteTree(tree.id);
+      pendo.track("tree_deleted", {
+        tree_id: tree.id,
+        topic: tree.topic,
+        source_page: "dashboard"
+      });
       setTrees((current) => current.filter((item) => item.id !== tree.id));
     } catch (err) {
       console.error(err);

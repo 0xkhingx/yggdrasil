@@ -26,8 +26,14 @@ export default function Auth({ onAuth }) {
     if (error) {
       setMessage(error.message);
     } else if (isSignUp) {
+      pendo.track("user_signed_up", {
+        auth_method: "email"
+      });
       setMessage("Check your email to confirm signup, then sign in.");
     } else if (data?.session) {
+      pendo.track("user_signed_in", {
+        auth_method: "email"
+      });
       onAuth(data.session);
       navigate("/");
     }

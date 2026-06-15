@@ -721,6 +721,7 @@ export default function Navbar() {
                     type="button"
                     className="navbar-more-item navbar-item"
                     onClick={async () => {
+                      pendo.clearSession();
                       await supabase.auth.signOut();
                       navigate("/auth");
                     }}

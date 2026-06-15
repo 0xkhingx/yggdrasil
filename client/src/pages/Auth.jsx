@@ -28,6 +28,12 @@ export default function Auth({ onAuth }) {
     } else if (isSignUp) {
       setMessage("Check your email to confirm signup, then sign in.");
     } else if (data?.session) {
+      pendo.identify({
+        visitor: {
+          id: data.session.user.id,
+          email: data.session.user.email
+        }
+      });
       onAuth(data.session);
       navigate("/");
     }

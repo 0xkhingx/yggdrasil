@@ -22,7 +22,7 @@ Yggdrasil is a learning platform that turns a topic into a structured, living cu
 - Frontend: React + Vite + Tailwind
 - Backend: Node.js + Express
 - Database: Supabase
-- AI: featherless.ai with DeepSeek-V3
+- AI: Anthropic Claude (claude-sonnet-4)
 
 ## How It Works
 
@@ -56,7 +56,7 @@ cp client/.env.example client/.env
 
 Required server env vars:
 
-- `FEATHERLESS_API_KEY`
+- `ANTHROPIC_API_KEY`
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_KEY`
 

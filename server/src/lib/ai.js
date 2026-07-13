@@ -1,13 +1,12 @@
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
-const MODEL = "deepseek-ai/DeepSeek-V3-0324";
+const MODEL = "claude-sonnet-4-20250514";
 let aiClient = null;
 
 function getAI() {
   if (!aiClient) {
-    aiClient = new OpenAI({
-      baseURL: "https://api.featherless.ai/v1",
-      apiKey: process.env.FEATHERLESS_API_KEY,
+    aiClient = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
     });
   }
   return aiClient;
@@ -80,17 +79,17 @@ Generate 3-4 branches, each with 3-4 nodes. Order from foundational to advanced.
 Topic: ${topic}
 Difficulty: ${difficulty}`;
 
-  const response = await fetch("https://api.featherless.ai/v1/chat/completions", {
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.FEATHERLESS_API_KEY}`,
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
       model: MODEL,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
       max_tokens: 4096,
+      messages: [{ role: "user", content: prompt }],
     }),
   });
 
@@ -100,7 +99,7 @@ Difficulty: ${difficulty}`;
   }
 
   const data = await response.json();
-  const text = data.choices?.[0]?.message?.content;
+  const text = data.content?.[0]?.text;
   if (typeof text !== "string" || !text.trim()) {
     throw new Error("Curriculum generation failed: empty model response");
   }
@@ -126,14 +125,13 @@ lesson. Do not ask about concepts not mentioned in the lesson. Frame it as
 'Based on what you just learned...' Keep it proportional to this difficulty 
 level: ${difficulty}. Return only the question, nothing else.`;
 
-  const res = await getAI().chat.completions.create({
+  const res = await getAI().messages.create({
     model: MODEL,
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.7,
     max_tokens: 256,
+    messages: [{ role: "user", content: prompt }],
   });
 
-  return res.choices[0].message.content.trim();
+  return res.content[0].text.trim();
 }
 
 export async function evaluateAnswer(lessonContent, question, answer) {
@@ -143,14 +141,13 @@ Learner's answer: "${answer}"
 Score this answer from 0-100. Be strict - partial understanding scores 40-60, solid understanding scores 70-85, excellent scores 86-100. Return ONLY a JSON object:
 {"score": <integer>, "feedback": "<one sentence of specific feedback>"}`;
 
-  const res = await getAI().chat.completions.create({
+  const res = await getAI().messages.create({
     model: MODEL,
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.3,
     max_tokens: 256,
+    messages: [{ role: "user", content: prompt }],
   });
 
-  const text = res.choices[0].message.content.trim();
+  const text = res.content[0].text.trim();
   const cleaned = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
   return JSON.parse(cleaned);
 }

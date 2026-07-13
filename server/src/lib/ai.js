@@ -88,7 +88,7 @@ Difficulty: ${difficulty}`;
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 4096,
+      max_tokens: 8192,
       messages: [{ role: "user", content: prompt }],
     }),
   });
@@ -103,8 +103,13 @@ Difficulty: ${difficulty}`;
   if (typeof text !== "string" || !text.trim()) {
     throw new Error("Curriculum generation failed: empty model response");
   }
-  const cleaned = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
-  const curriculum = JSON.parse(cleaned);
+  const cleaned = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "").trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start === -1 || end === -1) {
+    throw new Error("Curriculum generation failed: no JSON object found in response");
+  }
+  const curriculum = JSON.parse(cleaned.slice(start, end + 1));
   curriculum.branches = Array.isArray(curriculum.branches) ? curriculum.branches : [];
   curriculum.branches = curriculum.branches.map((branch) => ({
     ...branch,
